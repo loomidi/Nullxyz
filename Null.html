@@ -1,0 +1,77 @@
+const videoElement = document.getElementById('myVideo');
+
+// Define a default/substitute value for when x, y, or z is "null" or missing
+const DEFAULT_SUBSTITUTE_VALUE = 1; // You can change this to 0, or any other default you prefer
+
+function processAgentData(rawData) {
+    // 1. Apply the "null operator" concept for substitution
+    // Using Nullish Coalescing (??) is generally safer if 0 is a valid input
+    // If you want 0, '', false also to be substituted, use logical OR (||)
+    const x = rawData.x ?? DEFAULT_SUBSTITUTE_VALUE;
+    const y = rawData.y ?? DEFAULT_SUBSTITUTE_VALUE;
+    const z = rawData.z ?? DEFAULT_SUBSTITUTE_VALUE;
+
+    // Log the effectively used values after substitution
+    console.log(`Processed Triplet (after substitution): (${x}, ${y}, ${z})`);
+
+    // 2. Now, proceed with the "power to the x y z" logic using the potentially substituted values
+    const xPowered = Math.pow(x, 3);
+    const yPowered = Math.pow(y, 3);
+    const zPowered = Math.pow(z, 3);
+
+    console.log(`Powered Values: (X^3: ${xPowered}, Y^3: ${yPowered}, Z^3: ${zPowered})`);
+
+    // --- Using Powered Values for "Each Side" of the Video Element / Agent Logic ---
+
+    // Side 1: Control Video Playback Rate (influenced by X^3)
+    const maxXPermanent = 1000;
+    const normalizedXSpeed = Math.max(0.25, Math.min(3.0, xPowered / maxXPermanent * 2 + 0.5));
+    videoElement.playbackRate = normalizedXSpeed;
+    console.log(`Video playback rate set to: ${videoElement.playbackRate.toFixed(2)} (influenced by X^3)`);
+
+    // Side 2: Apply CSS Filter (influenced by Y^3)
+    const maxYPermanent = 1000;
+    const grayscaleAmount = Math.min(100, (yPowered / maxYPermanent) * 100);
+    videoElement.style.filter = `grayscale(${grayscaleAmount.toFixed(0)}%)`;
+    console.log(`Video filter set to grayscale(${grayscaleAmount.toFixed(0)}%) (influenced by Y^3)`);
+
+    // Side 3: Control Video Volume (influenced by Z^3)
+    const maxZPermanent = 1000;
+    const volumeLevel = Math.min(1.0, zPowered / maxZPermanent);
+    videoElement.volume = volumeLevel;
+    console.log(`Video volume set to: ${volumeLevel.toFixed(2)} (influenced by Z^3)`);
+
+    // Side 4 (Optional): Agent's Logging Verbosity (influenced by combined powers)
+    const totalPower = xPowered + yPowered + zPowered;
+    if (totalPower > 1500) {
+        console.log("Agent: High activity detected based on powered dimensions.");
+    } else if (totalPower > 500) {
+        console.log("Agent: Moderate activity detected.");
+    } else {
+        console.log("Agent: Low activity detected.");
+    }
+}
+
+// --- Test Cases ---
+
+// Case 1: All values present (normal operation)
+console.log("\n--- Test Case 1: All values present ---");
+processAgentData({ x: 5, y: 10, z: 2 });
+
+// Case 2: 'y' is missing/null, will be substituted
+console.log("\n--- Test Case 2: 'y' is null ---");
+processAgentData({ x: 5, y: null, z: 2 });
+
+// Case 3: 'x' is undefined, will be substituted
+console.log("\n--- Test Case 3: 'x' is undefined ---");
+processAgentData({ x: undefined, y: 10, z: 2 });
+
+// Case 4: 'z' is explicitly missing from the object, will be substituted
+console.log("\n--- Test Case 4: 'z' is missing ---");
+processAgentData({ x: 5, y: 10 });
+
+// Case 5: 'x' is 0, will *not* be substituted by ??, but would be by ||
+console.log("\n--- Test Case 5: 'x' is 0 (uses ??) ---");
+processAgentData({ x: 0, y: 10, z: 2 });
+// If you changed to x = rawData.x || DEFAULT_SUBSTITUTE_VALUE; in the function,
+// then 0 would be replaced by DEFAULT_SUBSTITUTE_VALUE.
