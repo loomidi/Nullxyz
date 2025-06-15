@@ -1,0 +1,29 @@
+# Node.js
+/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# Build artifacts (if you add a build step later)
+/dist/
+/build/
+
+# Log files
+*.log
+
+# Environment variables (if you ever use them)
+.env
+.env.local
+
+# External data (if you ever load large datasets)
+/data/
